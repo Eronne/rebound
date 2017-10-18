@@ -20,6 +20,10 @@ const colors = [
 ];
 
 var ball;
+var ballNumber = 500;
+var ballArray = [];
+var friction = 0.75;
+var gravity = 1;
 
 
 // Event Listeners
@@ -64,9 +68,9 @@ function Ball(x, y, velocity, radius, color) {
 	this.update = () => {
 		// Gravity of the ball
 		if (this.y + this.radius > canvas.height) {
-			this.vy = -this.vy
+			this.vy = -this.vy * friction
 		} else {
-			this.vy += 1
+			this.vy += gravity
 		}
 		this.y += this.vy;
 		this.draw();
@@ -76,6 +80,7 @@ function Ball(x, y, velocity, radius, color) {
 		c.beginPath();
 		c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
 		c.fillStyle = this.color;
+		c.stroke()
 		c.fill();
 		c.closePath();
 	};
@@ -83,18 +88,28 @@ function Ball(x, y, velocity, radius, color) {
 
 
 function init() {
-	ball = new Ball(canvas.width / 2, canvas.height / 2, 3, 30, 'red');
+	for (var i = 0; i < ballNumber; i++) {
+		var x = randomIntFromRange(0, canvas.width);
+		var y = randomIntFromRange(0, canvas.height);
+        ballArray.push(new Ball(x, y, 3, 30, 'red'))
+	}
+
+	canvas.addEventListener('click', function (e) {
+		ballArray.forEach(ball => {
+            ball.vy = randomIntFromRange(0, 50);
+    	})
+	})
 }
 
 // Animation Loop
 function animate() {
 	requestAnimationFrame(animate);
-	c.clearRect(0, 0, canvas.width, canvas.height);
+	c.fillStyle = 'rgba(255, 255, 255, 0.5';
+	c.fillRect(0, 0, canvas.width, canvas.height);
 
-	ball.update();
-	// objects.forEach(object => {
-	// 	object.update();
-	// });
+	ballArray.forEach(ball => {
+		ball.update();
+	})
 }
 
 init();
