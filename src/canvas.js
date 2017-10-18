@@ -96,6 +96,9 @@ function Ball(x, y, vx, vy, radius, color) {
 
 
 function init() {
+	// Clear tab while resizing the canvas
+	ballArray = [];
+
 	var radius = 30;
 	for (var i = 0; i < ballNumber; i++) {
 		var x = randomIntFromRange(radius, canvas.width - radius);

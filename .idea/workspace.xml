@@ -25,8 +25,8 @@
       <file leaf-file-name="canvas.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/canvas.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="354">
-              <caret line="119" column="0" lean-forward="true" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
+            <state relative-caret-position="257">
+              <caret line="33" column="0" lean-forward="true" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -245,12 +245,20 @@
       <updated>1508330422063</updated>
       <workItem from="1508330423176" duration="8991000" />
       <workItem from="1508352917136" duration="2053000" />
-      <workItem from="1508357848474" duration="2943000" />
+      <workItem from="1508357848474" duration="3500000" />
     </task>
+    <task id="LOCAL-00001" summary="Bouncing balls with vx &amp; vy">
+      <created>1508366554948</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1508366554948</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13987000" />
+    <option name="totallyTimeSpent" value="14544000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1440" height="874" extended-state="6" />
@@ -289,6 +297,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Bouncing balls with vx &amp; vy" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bouncing balls with vx &amp; vy" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -366,8 +378,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/canvas.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="354">
-          <caret line="119" column="0" lean-forward="true" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
+        <state relative-caret-position="257">
+          <caret line="33" column="0" lean-forward="true" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
           <folding />
         </state>
       </provider>
