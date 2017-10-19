@@ -25,8 +25,8 @@
       <file leaf-file-name="canvas.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/canvas.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="215">
-              <caret line="190" column="0" lean-forward="true" selection-start-line="190" selection-start-column="0" selection-end-line="190" selection-end-column="0" />
+            <state relative-caret-position="343">
+              <caret line="247" column="0" lean-forward="true" selection-start-line="247" selection-start-column="0" selection-end-line="247" selection-end-column="0" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -45,7 +45,12 @@
       <find>frame</find>
       <find>animate</find>
       <find>FRAME</find>
+      <find>ballsBass</find>
+      <find>ballArray</find>
     </findStrings>
+    <replaceStrings>
+      <replace>ballsArray</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -252,7 +257,7 @@
       <workItem from="1508352917136" duration="2053000" />
       <workItem from="1508357848474" duration="4009000" />
       <workItem from="1508397651345" duration="8889000" />
-      <workItem from="1508426132434" duration="8222000" />
+      <workItem from="1508426132434" duration="12120000" />
     </task>
     <task id="LOCAL-00001" summary="Bouncing balls with vx &amp; vy">
       <created>1508366554948</created>
@@ -282,11 +287,18 @@
       <option name="project" value="LOCAL" />
       <updated>1508406540024</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Balls animation + implemented frequencies spectrum">
+      <created>1508439772056</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1508439772056</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="32164000" />
+    <option name="totallyTimeSpent" value="36062000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="873" extended-state="6" />
@@ -331,7 +343,8 @@
     <MESSAGE value="Fixed clearing table while resizing" />
     <MESSAGE value="Changed balls animation" />
     <MESSAGE value="Added full page functionality" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added full page functionality" />
+    <MESSAGE value="Balls animation + implemented frequencies spectrum" />
+    <option name="LAST_COMMIT_MESSAGE" value="Balls animation + implemented frequencies spectrum" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -448,8 +461,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/canvas.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="190" column="0" lean-forward="true" selection-start-line="190" selection-start-column="0" selection-end-line="190" selection-end-column="0" />
+        <state relative-caret-position="343">
+          <caret line="247" column="0" lean-forward="true" selection-start-line="247" selection-start-column="0" selection-end-line="247" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>

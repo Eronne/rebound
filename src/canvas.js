@@ -37,6 +37,8 @@ var audioBuffer;
 var audioSource;
 var analyser = audioCtx.createAnalyser();
 var frequencyData = new Uint8Array(analyser.frequencyBinCount);
+
+var kickValue = 71;
 var timeToBegin = 3000;
 
 // Time stuff
@@ -53,14 +55,17 @@ var opts = {
 /*
  Ball Stuff
  */
+var ballNumber = 100;
+var ballsArray = [];
+var ballsBassArray = [];
+var ballsKickArray = [];
+var ballsMelodyArray = [];
+
 var ball;
 var radius = 45;
 var opacity = 0.7;
 var friction = 0.6;
 var gravity = 3;
-
-var ballNumber = 100;
-var ballArray = [];
 
 var beginningX = canvas.width / 2;
 var beginningY = canvas.height / 2;
@@ -160,23 +165,29 @@ function init() {
 	c.closePath();
 
 	// Clear tab while resizing the canvas
-	ballArray = [];
+	ballsArray = [];
 
 	for (var i = 0; i < ballsBass; i++) {
-		ballArray.push(new Ball(beginningX, beginningY + 8, beginningVx, beginningVy, radius - 8 , colors[0]))
+		ballsArray.push(new Ball(beginningX, beginningY + 8, beginningVx, beginningVy, radius - 8 , colors[0]))
 	}
 
 	for (var i = 0; i < ballsKick; i++) {
-		ballArray.push(new Ball(beginningX, beginningY + 4, beginningVx, beginningVy, radius - 4, colors[1]));
+		ballsArray.push(new Ball(beginningX, beginningY + 4, beginningVx, beginningVy, radius - 4, colors[1]));
 	}
 
 	for (var i = 0; i < ballsMelody; i++) {
-		ballArray.push(new Ball(beginningX, beginningY, beginningVx, beginningVy, radius, colors[2]));
+		ballsArray.push(new Ball(beginningX, beginningY, beginningVx, beginningVy, radius, colors[2]));
 	}
 
-	// First explosion
+	// Slice ballsArray for 3 independent tabs
+    ballsBassArray = ballsArray.slice(1, ballsBass);
+    ballsKickArray = ballsArray.slice(ballsBass, ballsBass + ballsKick);
+    ballsMelodyArray = ballsArray.slice(ballsBass + ballsKick, ballsArray);
+
+
+    // First explosion
 	setTimeout(function () {
-		ballArray.forEach(ball => {
+		ballsArray.forEach(ball => {
 			ball.vx = randomIntFromRange(-30, 30);
 			ball.vy = randomIntFromRange(10, 100);
     	})
@@ -206,7 +217,6 @@ function frame() {
     c.fillStyle = 'red'
     c.beginPath()
     for ( var i = 0; i < nbBars; i++ ) {
-
         // get the frequency according to current i
         let percentIdx = i / nbBars;
         let frequencyIdx = Math.floor(1024 * percentIdx)
@@ -214,21 +224,26 @@ function frame() {
         c.rect( i * barWidth + ( i * margin ), canvasHeight - frequencyData[frequencyIdx] , barWidth, frequencyData[frequencyIdx] );
 
         cumul += frequencyData[frequencyIdx];
-
     }
     c.fill()
     c.closePath()
 
     average = cumul / 255;
-    // console.log(average);
 
 
     c.fillStyle = 'rgba(29, 29, 29, 0.7';
     c.fillRect(0, 0, canvas.width, canvas.height);
 
-    ballArray.forEach(ball => {
+    ballsArray.forEach(ball => {
         ball.update();
 	})
+
+    if (average > kickValue) {
+        ballsKickArray.forEach(ball => {
+            ball.vx = randomIntFromRange(-30, 30);
+            ball.vy = randomIntFromRange(10, 80);
+        })
+    }
 }
 
 init();

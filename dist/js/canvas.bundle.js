@@ -87,16 +87,16 @@ var canvasHeight = window.innerHeight;
  Functions
  */
 function fullScreen() {
-  if (canvas.webkitRequestFullScreen) {
-    canvas.webkitRequestFullScreen();
-  } else {
-    canvas.mozRequestFullScreen();
-  }
+    if (canvas.webkitRequestFullScreen) {
+        canvas.webkitRequestFullScreen();
+    } else {
+        canvas.mozRequestFullScreen();
+    }
 }
 document.getElementById('fullScreen').addEventListener('click', fullScreen);
 
 function randomIntFromRange(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
+    return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 /*
@@ -108,6 +108,8 @@ var audioBuffer;
 var audioSource;
 var analyser = audioCtx.createAnalyser();
 var frequencyData = new Uint8Array(analyser.frequencyBinCount);
+
+var kickValue = 71;
 var timeToBegin = 3000;
 
 // Time stuff
@@ -116,19 +118,22 @@ var LAST_TIME = Date.now();
 
 // To delete
 var opts = {
-  barWidth: 10
+    barWidth: 10
 
-  /*
-   Ball Stuff
-   */
-};var ball;
+    /*
+     Ball Stuff
+     */
+};var ballNumber = 100;
+var ballsArray = [];
+var ballsBassArray = [];
+var ballsKickArray = [];
+var ballsMelodyArray = [];
+
+var ball;
 var radius = 45;
 var opacity = 0.7;
 var friction = 0.6;
 var gravity = 3;
-
-var ballNumber = 100;
-var ballArray = [];
 
 var beginningX = canvas.width / 2;
 var beginningY = canvas.height / 2;
@@ -143,147 +148,156 @@ var colors = ['rgb(136,216,176)', 'rgba(255,238,173,' + opacity + '', 'rgba(255,
 
 // Object
 function Ball(x, y, vx, vy, radius, color) {
-  var _this = this;
+    var _this = this;
 
-  this.x = x;
-  this.y = y;
-  this.vx = vx;
-  this.vy = vy;
-  this.radius = radius;
-  this.color = color;
+    this.x = x;
+    this.y = y;
+    this.vx = vx;
+    this.vy = vy;
+    this.radius = radius;
+    this.color = color;
 
-  this.update = function () {
-    // Gravity of the ball
-    if (_this.y + _this.radius + _this.vy > canvas.height) {
-      _this.vy = -_this.vy * friction;
-      _this.vx = _this.vx * friction;
-    } else {
-      _this.vy += gravity;
-    }
+    this.update = function () {
+        // Gravity of the ball
+        if (_this.y + _this.radius + _this.vy > canvas.height) {
+            _this.vy = -_this.vy * friction;
+            _this.vx = _this.vx * friction;
+        } else {
+            _this.vy += gravity;
+        }
 
-    if (_this.x + _this.radius + _this.vx > canvas.width || _this.x - _this.radius <= 0) {
-      _this.vx = -_this.vx * friction;
-    }
+        if (_this.x + _this.radius + _this.vx > canvas.width || _this.x - _this.radius <= 0) {
+            _this.vx = -_this.vx * friction;
+        }
 
-    _this.x += _this.vx;
-    _this.y += _this.vy;
-    _this.draw();
-  };
+        _this.x += _this.vx;
+        _this.y += _this.vy;
+        _this.draw();
+    };
 
-  this.draw = function () {
-    c.beginPath();
-    c.arc(_this.x, _this.y, _this.radius, 0, Math.PI * 2, false);
-    c.fillStyle = _this.color;
-    c.stroke();
-    c.fill();
-    c.closePath();
-  };
+    this.draw = function () {
+        c.beginPath();
+        c.arc(_this.x, _this.y, _this.radius, 0, Math.PI * 2, false);
+        c.fillStyle = _this.color;
+        c.stroke();
+        c.fill();
+        c.closePath();
+    };
 }
 
 function loadSound(url) {
-  var request = new XMLHttpRequest();
-  request.open('GET', './sounds/sound.mp3', true);
-  request.responseType = 'arraybuffer';
+    var request = new XMLHttpRequest();
+    request.open('GET', './sounds/sound.mp3', true);
+    request.responseType = 'arraybuffer';
 
-  // Decode asynchronously
-  request.onload = function () {
+    // Decode asynchronously
+    request.onload = function () {
 
-    audioCtx.decodeAudioData(request.response, function (buffer) {
+        audioCtx.decodeAudioData(request.response, function (buffer) {
 
-      // success callback
-      audioBuffer = buffer;
+            // success callback
+            audioBuffer = buffer;
 
-      // Create sound from buffer
-      audioSource = audioCtx.createBufferSource();
-      audioSource.buffer = audioBuffer;
+            // Create sound from buffer
+            audioSource = audioCtx.createBufferSource();
+            audioSource.buffer = audioBuffer;
 
-      // connect the audio source to context's output
-      audioSource.connect(analyser);
-      analyser.connect(audioCtx.destination);
-      frame();
-    }, function () {
+            // connect the audio source to context's output
+            audioSource.connect(analyser);
+            analyser.connect(audioCtx.destination);
+            frame();
+        }, function () {
 
-      // error callback
-      //
-    });
-  };
-  request.send();
+            // error callback
+            //
+        });
+    };
+    request.send();
 }
 
 function init() {
-  // Draw background rectangle
-  c.beginPath();
-  c.rect(0, 0, canvas.width, canvas.height);
-  c.fillStyle = 'rgb(29, 29, 29)';
-  c.fill();
-  c.closePath();
+    // Draw background rectangle
+    c.beginPath();
+    c.rect(0, 0, canvas.width, canvas.height);
+    c.fillStyle = 'rgb(29, 29, 29)';
+    c.fill();
+    c.closePath();
 
-  // Clear tab while resizing the canvas
-  ballArray = [];
+    // Clear tab while resizing the canvas
+    ballsArray = [];
 
-  for (var i = 0; i < ballsBass; i++) {
-    ballArray.push(new Ball(beginningX, beginningY + 8, beginningVx, beginningVy, radius - 8, colors[0]));
-  }
+    for (var i = 0; i < ballsBass; i++) {
+        ballsArray.push(new Ball(beginningX, beginningY + 8, beginningVx, beginningVy, radius - 8, colors[0]));
+    }
 
-  for (var i = 0; i < ballsKick; i++) {
-    ballArray.push(new Ball(beginningX, beginningY + 4, beginningVx, beginningVy, radius - 4, colors[1]));
-  }
+    for (var i = 0; i < ballsKick; i++) {
+        ballsArray.push(new Ball(beginningX, beginningY + 4, beginningVx, beginningVy, radius - 4, colors[1]));
+    }
 
-  for (var i = 0; i < ballsMelody; i++) {
-    ballArray.push(new Ball(beginningX, beginningY, beginningVx, beginningVy, radius, colors[2]));
-  }
+    for (var i = 0; i < ballsMelody; i++) {
+        ballsArray.push(new Ball(beginningX, beginningY, beginningVx, beginningVy, radius, colors[2]));
+    }
 
-  // First explosion
-  setTimeout(function () {
-    ballArray.forEach(function (ball) {
-      ball.vx = randomIntFromRange(-30, 30);
-      ball.vy = randomIntFromRange(10, 100);
-    });
-    audioSource.start();
-  }, timeToBegin);
+    // Slice ballsArray for 3 independent tabs
+    ballsBassArray = ballsArray.slice(1, ballsBass);
+    ballsKickArray = ballsArray.slice(ballsBass, ballsBass + ballsKick);
+    ballsMelodyArray = ballsArray.slice(ballsBass + ballsKick, ballsArray);
+
+    // First explosion
+    setTimeout(function () {
+        ballsArray.forEach(function (ball) {
+            ball.vx = randomIntFromRange(-30, 30);
+            ball.vy = randomIntFromRange(10, 100);
+        });
+        audioSource.start();
+    }, timeToBegin);
 }
 
 function frame() {
-  requestAnimationFrame(frame);
+    requestAnimationFrame(frame);
 
-  DELTA_TIME = Date.now() - LAST_TIME;
-  LAST_TIME = Date.now();
+    DELTA_TIME = Date.now() - LAST_TIME;
+    LAST_TIME = Date.now();
 
-  // analyser.getByteFrequencyData(frequencyData);
-  analyser.getByteFrequencyData(frequencyData);
+    // analyser.getByteFrequencyData(frequencyData);
+    analyser.getByteFrequencyData(frequencyData);
 
-  var barWidth = opts.barWidth;
-  var margin = 2;
-  var nbBars = canvasWith / (barWidth - margin);
+    var barWidth = opts.barWidth;
+    var margin = 2;
+    var nbBars = canvasWith / (barWidth - margin);
 
-  var cumul = 0;
-  var average = 0;
+    var cumul = 0;
+    var average = 0;
 
-  c.fillStyle = 'red';
-  c.beginPath();
-  for (var i = 0; i < nbBars; i++) {
+    c.fillStyle = 'red';
+    c.beginPath();
+    for (var i = 0; i < nbBars; i++) {
+        // get the frequency according to current i
+        var percentIdx = i / nbBars;
+        var frequencyIdx = Math.floor(1024 * percentIdx);
 
-    // get the frequency according to current i
-    var percentIdx = i / nbBars;
-    var frequencyIdx = Math.floor(1024 * percentIdx);
+        c.rect(i * barWidth + i * margin, canvasHeight - frequencyData[frequencyIdx], barWidth, frequencyData[frequencyIdx]);
 
-    c.rect(i * barWidth + i * margin, canvasHeight - frequencyData[frequencyIdx], barWidth, frequencyData[frequencyIdx]);
+        cumul += frequencyData[frequencyIdx];
+    }
+    c.fill();
+    c.closePath();
 
-    cumul += frequencyData[frequencyIdx];
-  }
-  c.fill();
-  c.closePath();
+    average = cumul / 255;
 
-  average = cumul / 255;
-  // console.log(average);
+    c.fillStyle = 'rgba(29, 29, 29, 0.7';
+    c.fillRect(0, 0, canvas.width, canvas.height);
 
+    ballsArray.forEach(function (ball) {
+        ball.update();
+    });
 
-  c.fillStyle = 'rgba(29, 29, 29, 0.7';
-  c.fillRect(0, 0, canvas.width, canvas.height);
-
-  ballArray.forEach(function (ball) {
-    ball.update();
-  });
+    if (average > kickValue) {
+        ballsKickArray.forEach(function (ball) {
+            ball.vx = randomIntFromRange(-30, 30);
+            ball.vy = randomIntFromRange(10, 80);
+        });
+    }
 }
 
 init();
