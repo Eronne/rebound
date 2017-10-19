@@ -8,11 +8,37 @@
 			margin: 0;
 			overflow: hidden;
 		}
+
+		.controls {
+			margin-top: 10px;
+			margin-right: 10px;
+			position: absolute;
+			right: 0;
+			display: flex;
+		}
+
+		button {
+			box-sizing: border-box;
+			padding: 7px 10px;
+			color: #ecf0f1;
+			border: none;
+			background-color: transparent;
+			transition: all 0.3s ease;
+		}
+
+		button:hover {
+			color: #1b1b1b;
+			background-color: #ecf0f1;
+		}
 	</style>
 </head>
 <body>
+	<div class="controls">
+		<button id="fullScreen">O</button>
+	</div>
 	<canvas></canvas>
-	<script src="js/stats.min.js"></script>
 	<script src="js/canvas.bundle.js"></script>
+	<script type="text/javascript">
+	</script>
 </body>
 </html>

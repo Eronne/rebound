@@ -88,11 +88,20 @@ var ballArray = [];
 var friction = 0.75;
 var gravity = 1;
 
+function fullScreen() {
+	if (canvas.webkitRequestFullScreen) {
+		canvas.webkitRequestFullScreen();
+	} else {
+		canvas.mozRequestFullScreen();
+	}
+}
+document.getElementById('fullScreen').addEventListener('click', fullScreen);
+
 addEventListener('resize', function () {
 	canvas.width = innerWidth;
 	canvas.height = innerHeight;
-	init();
 });
+init();
 
 function randomIntFromRange(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min);
