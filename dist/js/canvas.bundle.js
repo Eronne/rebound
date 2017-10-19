@@ -73,57 +73,34 @@
 "use strict";
 
 
-// Initial Setup
 var canvas = document.querySelector('canvas');
 var c = canvas.getContext('2d');
 
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 
-// Variables
-var mouse = {
-	x: innerWidth / 2,
-	y: innerHeight / 2
-};
-
-var colors = ['#2185C5', '#7ECEFD', '#FFF6E5', '#FF7F66'];
-
 var ball;
 var ballNumber = 100;
+var ballsBass = Math.floor(ballNumber / 3);
+var ballsKick = Math.floor((ballNumber - ballsBass) / 2);
+var ballsMelody = ballNumber - (ballsBass + ballsKick);
 var ballArray = [];
 var friction = 0.75;
 var gravity = 1;
 
-// Event Listeners
-addEventListener('mousemove', function (event) {
-	mouse.x = event.clientX;
-	mouse.y = event.clientY;
-});
-
 addEventListener('resize', function () {
 	canvas.width = innerWidth;
 	canvas.height = innerHeight;
-
 	init();
 });
 
-// Utility Functions
 function randomIntFromRange(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function randomColor(colors) {
-	return colors[Math.floor(Math.random() * colors.length)];
-}
+var colors = ['#2185C5', '#7ECEFD', '#FFF6E5', '#FF7F66'];
 
-function distance(x1, y1, x2, y2) {
-	var xDist = x2 - x1;
-	var yDist = y2 - y1;
-
-	return Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
-}
-
-// Objects
+// Object
 function Ball(x, y, vx, vy, radius, color) {
 	var _this = this;
 
@@ -163,29 +140,45 @@ function Ball(x, y, vx, vy, radius, color) {
 }
 
 function init() {
+	// Draw background rectangle
+	c.beginPath();
+	c.rect(0, 0, canvas.width, canvas.height);
+	c.fillStyle = 'rgb(29, 29, 29)';
+	c.fill();
+	c.closePath();
+
 	// Clear tab while resizing the canvas
 	ballArray = [];
 
 	var radius = 30;
-	for (var i = 0; i < ballNumber; i++) {
-		var x = randomIntFromRange(radius, canvas.width - radius);
-		var y = randomIntFromRange(0, canvas.height - radius);
-		var vx = randomIntFromRange(-2, 2);
+	var x = randomIntFromRange(radius, canvas.width - radius);
+	var y = randomIntFromRange(0, canvas.height - radius);
+	var vx = randomIntFromRange(-10, 10);
+
+	for (var k = 0; k < ballsBass; k++) {
 		ballArray.push(new Ball(x, y, vx, 3, 30, 'red'));
 	}
 
-	canvas.addEventListener('click', function (e) {
+	for (var k = 0; k < ballsKick; k++) {
+		ballArray.push(new Ball(x, y, vx, 3, 30, 'blue'));
+	}
+
+	for (var k = 0; k < ballsMelody; k++) {
+		ballArray.push(new Ball(x, y, vx, 3, 30, 'green'));
+	}
+
+	// First explosion
+	setTimeout(function () {
 		ballArray.forEach(function (ball) {
-			ball.vx = randomIntFromRange(-2, 2);
+			ball.vx = randomIntFromRange(-10, 10);
 			ball.vy = randomIntFromRange(0, 50);
 		});
-	});
+	}, 6000);
 }
 
-// Animation Loop
 function animate() {
 	requestAnimationFrame(animate);
-	c.fillStyle = 'rgba(255, 255, 255, 0.5';
+	c.fillStyle = 'rgba(29, 29, 29, 0.5';
 	c.fillRect(0, 0, canvas.width, canvas.height);
 
 	ballArray.forEach(function (ball) {
