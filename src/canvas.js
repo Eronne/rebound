@@ -28,11 +28,6 @@ function randomIntFromRange(min,max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function randomColor(colors) {
-    return colors[Math.floor(Math.random() * colors.length)];
-}
-
-
 
 /*
  Audio Stuff
@@ -44,7 +39,6 @@ var audioSource;
 var analyser = audioCtx.createAnalyser();
 var frequencyData = new Uint8Array(analyser.frequencyBinCount);
 
-var timeToBegin = 2000;
 
 var bassValue = 115;
 var kickValue = 8;
@@ -61,12 +55,39 @@ var melodyInterval = 400;
 
 
 // Time stuff
+var timeToBegin = 2000;
 var DELTA_TIME = 0;
 var LAST_TIME = Date.now();
 
-// To delete
-var opts = {
-    barWidth: 10
+function loadSound(url) {
+    var request = new XMLHttpRequest();
+    request.open('GET', './sounds/sound.mp3', true);
+    request.responseType = 'arraybuffer';
+
+    // Decode asynchronously
+    request.onload = function() {
+
+        audioCtx.decodeAudioData(request.response, function(buffer) {
+
+            // success callback
+            audioBuffer = buffer;
+
+            // Create sound from buffer
+            audioSource = audioCtx.createBufferSource();
+            audioSource.buffer = audioBuffer;
+
+            // connect the audio source to context's output
+            audioSource.connect( analyser )
+            analyser.connect( audioCtx.destination )
+            frame()
+
+        }, function(){
+
+            // error callback
+            //
+        });
+    }
+    request.send();
 }
 
 
@@ -138,39 +159,6 @@ function Ball(x, y, vx, vy, radius, color, lineWidth, strokeColor) {
 		c.fill();
 		c.closePath();
 	};
-}
-
-
-
-function loadSound(url) {
-    var request = new XMLHttpRequest();
-    request.open('GET', './sounds/sound.mp3', true);
-    request.responseType = 'arraybuffer';
-
-    // Decode asynchronously
-    request.onload = function() {
-
-        audioCtx.decodeAudioData(request.response, function(buffer) {
-
-            // success callback
-            audioBuffer = buffer;
-
-            // Create sound from buffer
-            audioSource = audioCtx.createBufferSource();
-            audioSource.buffer = audioBuffer;
-
-            // connect the audio source to context's output
-            audioSource.connect( analyser )
-            analyser.connect( audioCtx.destination )
-            frame()
-
-        }, function(){
-
-            // error callback
-            //
-        });
-    }
-    request.send();
 }
 
 

@@ -3,42 +3,16 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Rebound</title>
-	<style>
-		body {
-			margin: 0;
-			overflow: hidden;
-		}
-
-		.controls {
-			margin-top: 10px;
-			margin-right: 10px;
-			position: absolute;
-			right: 0;
-			display: flex;
-		}
-
-		button {
-			box-sizing: border-box;
-			padding: 7px 10px;
-			color: #ecf0f1;
-			border: none;
-			background-color: transparent;
-			transition: all 0.3s ease;
-		}
-
-		button:hover {
-			color: #1b1b1b;
-			background-color: #ecf0f1;
-		}
-	</style>
+	<link rel="icon" href="./img/favicon.png" />
+	<link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
 	<div class="controls">
-		<button id="fullScreen">O</button>
+		<button id="fullScreen">
+			<img src="./img/fullscreen.svg" alt="Full Screen mode">
+		</button>
 	</div>
 	<canvas></canvas>
 	<script src="js/canvas.bundle.js"></script>
-	<script type="text/javascript">
-	</script>
 </body>
 </html>
