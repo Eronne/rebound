@@ -8,6 +8,8 @@ canvas.height = innerHeight;
 var canvasWith = window.innerWidth;
 var canvasHeight = window.innerHeight;
 
+
+
 /*
  Functions
  */
@@ -26,6 +28,10 @@ function randomIntFromRange(min,max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+function randomColor(colors) {
+    return colors[Math.floor(Math.random() * colors.length)];
+}
+
 
 
 /*
@@ -38,10 +44,21 @@ var audioSource;
 var analyser = audioCtx.createAnalyser();
 var frequencyData = new Uint8Array(analyser.frequencyBinCount);
 
+var timeToBegin = 2000;
+
 var bassValue = 115;
-var kickValue = 65;
-var melodyValue = 4;
-var timeToBegin = 3000;
+var kickValue = 8;
+var melodyValue = 6;
+
+var bassTimestamp = 0;
+var kickTimestamp = 0;
+var melodyTimestamp = 0;
+
+
+var bassInterval = 1150;
+var kickInterval = 1200;
+var melodyInterval = 400;
+
 
 // Time stuff
 var DELTA_TIME = 0;
@@ -66,9 +83,9 @@ var ballsMelodyArray = [];
 
 var ball;
 var radius = 45;
-var opacity = 0.7;
+var opacity = 0.75;
 var friction = 0.6;
-var gravity = 3;
+var gravity = 2.5;
 
 var beginningX = canvas.width / 2;
 var beginningY = canvas.height / 2;
@@ -80,21 +97,23 @@ var ballsKick = Math.floor((ballNumber - ballsBass) / 2);
 var ballsMelody = ballNumber - (ballsBass + ballsKick);
 
 const colors = [
-    'rgb(136,216,176)',
-    'rgba(255,238,173,' + opacity + '',
-    'rgba(255,111,105,' + opacity + ''
+    'rgb(119,124,168)',
+    'rgba(175,186,220,' + opacity + '',
+    'rgba(240,146,165,' + opacity + ''
 ];
 
 
 
 // Object
-function Ball(x, y, vx, vy, radius, color) {
+function Ball(x, y, vx, vy, radius, color, lineWidth, strokeColor) {
 	this.x = x;
 	this.y = y;
 	this.vx = vx;
 	this.vy = vy;
 	this.radius = radius;
 	this.color = color;
+	this.lineWidth = lineWidth;
+	this.strokeColor = strokeColor;
 
 	this.update = () => {
 		// Gravity of the ball
@@ -118,6 +137,8 @@ function Ball(x, y, vx, vy, radius, color) {
 		c.beginPath();
 		c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
 		c.fillStyle = this.color;
+        c.lineWidth = lineWidth;
+        c.strokeStyle = this.strokeColor;
 		c.stroke();
 		c.fill();
 		c.closePath();
@@ -163,7 +184,7 @@ function init() {
 	// Draw background rectangle
 	c.beginPath();
 	c.rect(0,0,canvas.width,canvas.height);
-	c.fillStyle = 'rgb(29, 29, 29)';
+	c.fillStyle = 'rgb(238, 108, 129)';
 	c.fill();
 	c.closePath();
 
@@ -171,15 +192,15 @@ function init() {
 	ballsArray = [];
 
 	for (var i = 0; i < ballsBass; i++) {
-		ballsArray.push(new Ball(beginningX, beginningY + 8, beginningVx, beginningVy, radius - 8 , colors[0]))
+		ballsArray.push(new Ball(beginningX, beginningY + 8, beginningVx, beginningVy, radius - 8 , colors[0], 3, colors[1]))
 	}
 
 	for (var i = 0; i < ballsKick; i++) {
-		ballsArray.push(new Ball(beginningX, beginningY + 4, beginningVx, beginningVy, radius - 4, colors[1]));
+		ballsArray.push(new Ball(beginningX, beginningY + 4, beginningVx, beginningVy, radius - 4, colors[1], 3, colors[2]));
 	}
 
 	for (var i = 0; i < ballsMelody; i++) {
-		ballsArray.push(new Ball(beginningX, beginningY, beginningVx, beginningVy, radius, colors[2]));
+		ballsArray.push(new Ball(beginningX, beginningY, beginningVx, beginningVy, radius, colors[2], 3, colors[0]));
 	}
 
 	// Slice ballsArray for 3 independent tabs
@@ -210,7 +231,7 @@ function frame() {
     analyser.getByteFrequencyData(frequencyData);
 
 
-    c.fillStyle = 'rgba(29, 29, 29, 0.7';
+    c.fillStyle = 'rgba(238, 108, 129, 0.7';
     c.fillRect(0, 0, canvas.width, canvas.height);
 
     // Average frequencies
@@ -230,34 +251,56 @@ function frame() {
         averageData.push(currentAverage);
     }
 
+    /**
+     * Balls animations
+     */
+    var bassAverage = averageData[0];
+    var kickAverage = averageData[2];
+    var melodyAverage = averageData[2];
+
+    bassTimestamp += DELTA_TIME;
+    var canBass = ( bassTimestamp > bassInterval );
+    if (bassAverage > bassValue && canBass) {
+        bassTimestamp = 0;
+
+        ballsBassArray.forEach(ball => {
+            ball.vx = randomIntFromRange(-30, 30);
+            ball.vy = randomIntFromRange(10, 92);
+        })
+    }
+
+    kickTimestamp += DELTA_TIME;
+    var canKick = ( kickTimestamp > kickInterval );
+    if (kickAverage > kickValue && canKick) {
+        kickTimestamp = 0;
+
+        c.beginPath();
+        c.rect(0,0,canvas.width,canvas.height);
+        c.fillStyle = '#bb1924';
+        c.fill();
+        c.closePath();
+
+        ballsKickArray.forEach(ball => {
+            ball.vx = randomIntFromRange(-25, 25);
+            ball.vy = randomIntFromRange(10, 75);
+        })
+    }
+
+
+    melodyTimestamp += DELTA_TIME;
+    var canMelody = ( melodyTimestamp > melodyInterval );
+    if (melodyAverage > melodyValue && canMelody) {
+        melodyTimestamp = 0;
+
+        ballsMelodyArray.forEach(ball => {
+            ball.vx = randomIntFromRange(-20, 20);
+            ball.vy = randomIntFromRange(10, 45);
+        })
+    }
 
     ballsArray.forEach(ball => {
         ball.update();
     })
-
-    /**
-     * Balls animations
-     */
-    if (averageData[0] > bassValue) {
-        ballsBassArray.forEach(ball => {
-            ball.vx = randomIntFromRange(-30, 30);
-            ball.vy = randomIntFromRange(10, 80);
-        })
-    }
-
-    if (averageData[1] > kickValue) {
-        ballsKickArray.forEach(ball => {
-            ball.vx = randomIntFromRange(-30, 30);
-            ball.vy = randomIntFromRange(10, 80);
-        })
-    }
-
-    if (averageData[2] > melodyValue) {
-        ballsMelodyArray.forEach(ball => {
-            ball.vx = randomIntFromRange(-30, 30);
-            ball.vy = randomIntFromRange(10, 80);
-        })
-    }
 }
 
 init();

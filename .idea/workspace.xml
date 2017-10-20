@@ -25,8 +25,8 @@
       <file leaf-file-name="canvas.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/canvas.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="321">
-              <caret line="51" column="16" lean-forward="true" selection-start-line="51" selection-start-column="16" selection-end-line="51" selection-end-column="16" />
+            <state relative-caret-position="254">
+              <caret line="48" column="20" lean-forward="false" selection-start-line="48" selection-start-column="20" selection-end-line="48" selection-end-column="20" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -49,6 +49,11 @@
       <find>ballArray</find>
       <find>frequen</find>
       <find>average</find>
+      <find>opa</find>
+      <find>beattim</find>
+      <find />
+      <find>kicktime</find>
+      <find>timetobe</find>
     </findStrings>
     <replaceStrings>
       <replace>ballsArray</replace>
@@ -282,7 +287,7 @@
       <workItem from="1508357848474" duration="4009000" />
       <workItem from="1508397651345" duration="8889000" />
       <workItem from="1508426132434" duration="13558000" />
-      <workItem from="1508485440903" duration="2626000" />
+      <workItem from="1508485440903" duration="9511000" />
     </task>
     <task id="LOCAL-00001" summary="Bouncing balls with vx &amp; vy">
       <created>1508366554948</created>
@@ -326,11 +331,18 @@
       <option name="project" value="LOCAL" />
       <updated>1508445616460</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Average data tabs">
+      <created>1508488137510</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1508488137510</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="40126000" />
+    <option name="totallyTimeSpent" value="47011000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="873" extended-state="6" />
@@ -377,7 +389,8 @@
     <MESSAGE value="Added full page functionality" />
     <MESSAGE value="Balls animation + implemented frequencies spectrum" />
     <MESSAGE value="Sliced ballsArray + kick animation v1" />
-    <option name="LAST_COMMIT_MESSAGE" value="Sliced ballsArray + kick animation v1" />
+    <MESSAGE value="Average data tabs" />
+    <option name="LAST_COMMIT_MESSAGE" value="Average data tabs" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -504,8 +517,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/canvas.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
-          <caret line="51" column="16" lean-forward="true" selection-start-line="51" selection-start-column="16" selection-end-line="51" selection-end-column="16" />
+        <state relative-caret-position="254">
+          <caret line="48" column="20" lean-forward="false" selection-start-line="48" selection-start-column="20" selection-end-line="48" selection-end-column="20" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
