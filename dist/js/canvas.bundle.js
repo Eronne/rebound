@@ -109,7 +109,9 @@ var audioSource;
 var analyser = audioCtx.createAnalyser();
 var frequencyData = new Uint8Array(analyser.frequencyBinCount);
 
-var kickValue = 71;
+var bassValue = 115;
+var kickValue = 65;
+var melodyValue = 4;
 var timeToBegin = 3000;
 
 // Time stuff
@@ -124,6 +126,7 @@ var opts = {
      Ball Stuff
      */
 };var ballNumber = 100;
+var ballsTypes = 3;
 var ballsArray = [];
 var ballsBassArray = [];
 var ballsKickArray = [];
@@ -241,7 +244,7 @@ function init() {
     // Slice ballsArray for 3 independent tabs
     ballsBassArray = ballsArray.slice(1, ballsBass);
     ballsKickArray = ballsArray.slice(ballsBass, ballsBass + ballsKick);
-    ballsMelodyArray = ballsArray.slice(ballsBass + ballsKick, ballsArray);
+    ballsMelodyArray = ballsArray.slice(ballsBass + ballsKick, ballsArray.length);
 
     // First explosion
     setTimeout(function () {
@@ -262,38 +265,49 @@ function frame() {
     // analyser.getByteFrequencyData(frequencyData);
     analyser.getByteFrequencyData(frequencyData);
 
-    var barWidth = opts.barWidth;
-    var margin = 2;
-    var nbBars = canvasWith / (barWidth - margin);
-
-    var cumul = 0;
-    var average = 0;
-
-    c.fillStyle = 'red';
-    c.beginPath();
-    for (var i = 0; i < nbBars; i++) {
-        // get the frequency according to current i
-        var percentIdx = i / nbBars;
-        var frequencyIdx = Math.floor(1024 * percentIdx);
-
-        c.rect(i * barWidth + i * margin, canvasHeight - frequencyData[frequencyIdx], barWidth, frequencyData[frequencyIdx]);
-
-        cumul += frequencyData[frequencyIdx];
-    }
-    c.fill();
-    c.closePath();
-
-    average = cumul / 255;
-
     c.fillStyle = 'rgba(29, 29, 29, 0.7';
     c.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Average frequencies
+    var averageData = [];
+    for (var i = 0; i <= ballsTypes - 1; i++) {
+        var currentAverage = 0;
+        var cumul = 0;
+
+        var begin = Math.floor((frequencyData.length - 1) / ballsTypes * i);
+        var end = Math.floor((frequencyData.length - 1) / ballsTypes * (i + 1));
+
+        for (var j = begin; j < end; j++) {
+            cumul += frequencyData[j];
+        }
+
+        currentAverage = cumul / (end - begin);
+        averageData.push(currentAverage);
+    }
 
     ballsArray.forEach(function (ball) {
         ball.update();
     });
 
-    if (average > kickValue) {
+    /**
+     * Balls animations
+     */
+    if (averageData[0] > bassValue) {
+        ballsBassArray.forEach(function (ball) {
+            ball.vx = randomIntFromRange(-30, 30);
+            ball.vy = randomIntFromRange(10, 80);
+        });
+    }
+
+    if (averageData[1] > kickValue) {
         ballsKickArray.forEach(function (ball) {
+            ball.vx = randomIntFromRange(-30, 30);
+            ball.vy = randomIntFromRange(10, 80);
+        });
+    }
+
+    if (averageData[2] > melodyValue) {
+        ballsMelodyArray.forEach(function (ball) {
             ball.vx = randomIntFromRange(-30, 30);
             ball.vy = randomIntFromRange(10, 80);
         });
