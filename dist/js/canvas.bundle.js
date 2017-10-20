@@ -147,7 +147,7 @@ var ballsMelodyArray = [];
 
 var ball;
 var radius = 45;
-var opacity = 0.75;
+var opacity = 0.85;
 var friction = 0.6;
 var gravity = 2.5;
 
@@ -160,7 +160,7 @@ var ballsBass = Math.floor(ballNumber / 3);
 var ballsKick = Math.floor((ballNumber - ballsBass) / 2);
 var ballsMelody = ballNumber - (ballsBass + ballsKick);
 
-var colors = ['rgb(119,124,168)', 'rgba(175,186,220,' + opacity + '', 'rgba(240,146,165,' + opacity + ''];
+var colors = ['rgb(138, 230, 176)', 'rgba(124, 186, 191,' + opacity + '', 'rgba(107, 126, 153,' + opacity + ''];
 
 // Object
 function Ball(x, y, vx, vy, radius, color, lineWidth, strokeColor) {
@@ -172,8 +172,6 @@ function Ball(x, y, vx, vy, radius, color, lineWidth, strokeColor) {
     this.vy = vy;
     this.radius = radius;
     this.color = color;
-    this.lineWidth = lineWidth;
-    this.strokeColor = strokeColor;
 
     this.update = function () {
         // Gravity of the ball
@@ -197,9 +195,6 @@ function Ball(x, y, vx, vy, radius, color, lineWidth, strokeColor) {
         c.beginPath();
         c.arc(_this.x, _this.y, _this.radius, 0, Math.PI * 2, false);
         c.fillStyle = _this.color;
-        c.lineWidth = lineWidth;
-        c.strokeStyle = _this.strokeColor;
-        c.stroke();
         c.fill();
         c.closePath();
     };
@@ -239,7 +234,7 @@ function init() {
     // Draw background rectangle
     c.beginPath();
     c.rect(0, 0, canvas.width, canvas.height);
-    c.fillStyle = 'rgb(238, 108, 129)';
+    c.fillStyle = 'rgb(75, 61, 77)';
     c.fill();
     c.closePath();
 
@@ -282,7 +277,7 @@ function frame() {
     // analyser.getByteFrequencyData(frequencyData);
     analyser.getByteFrequencyData(frequencyData);
 
-    c.fillStyle = 'rgba(238, 108, 129, 0.7';
+    c.fillStyle = 'rgba(75, 61, 77, 0.7';
     c.fillRect(0, 0, canvas.width, canvas.height);
 
     // Average frequencies
@@ -327,7 +322,7 @@ function frame() {
 
         c.beginPath();
         c.rect(0, 0, canvas.width, canvas.height);
-        c.fillStyle = '#bb1924';
+        c.fillStyle = 'rgb(93, 86, 115)';
         c.fill();
         c.closePath();
 
